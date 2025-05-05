@@ -1,5 +1,5 @@
 // Your deployed contract address
-export const CONTRACT_ADDRESS = "0x8da644e76f2d3174CFec4a235bD4f242A259E1c7";
+export const CONTRACT_ADDRESS = "0xeEE5aCADD42cd1512d877347E4Ee178bcd42fCC9";
 
 // Network configuration
 export const NETWORK_CONFIG = {

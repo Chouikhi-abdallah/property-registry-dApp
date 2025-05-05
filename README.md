@@ -1,127 +1,172 @@
-# Property Registry DApp
+# Application Décentralisée de Registre Immobilier (Property Registry dApp)
 
-A decentralized application for property registration, validation, and trading built on Ethereum blockchain.
+Cette application décentralisée (dApp) permet la gestion d'un registre immobilier sur la blockchain Ethereum. Elle utilise un contrat intelligent pour enregistrer, approuver et vendre des propriétés, avec un système de rôles et de commissions.
 
-## Overview
+## Fonctionnalités
 
-This DApp allows users to:
-- Register properties with details (title, description, location, price)
-- Get properties validated by an admin
-- Buy and sell properties using ETH
-- View owned properties and wallet balance
+### Rôles Utilisateurs
+- **Super Admin**: Peut ajouter des administrateurs et enregistrer des utilisateurs
+- **Admin**: Peut approuver/rejeter des propriétés et retirer ses commissions
+- **Utilisateur Enregistré**: Peut enregistrer et acheter des propriétés
 
-## Technology Stack
+### Fonctionnalités Principales
+- Enregistrement de propriétés avec titre, description, emplacement et prix
+- Système d'approbation des propriétés par les administrateurs
+- Achat de propriétés avec commission de 10% pour l'administrateur
+- Gestion des gains des administrateurs
+- Interface adaptative selon le rôle de l'utilisateur
 
-- **Smart Contract**: Solidity (via Truffle)
-- **Frontend**: React.js with Vite
-- **Blockchain Integration**: Ethers.js
-- **Wallet Connection**: MetaMask
-- **Local Development**: Ganache
+## Technologies Utilisées
 
-## Project Structure
+- **Contrat Intelligent**: Solidity (via Truffle)
+- **Frontend**: React.js avec Vite
+- **Intégration Blockchain**: Ethers.js
+- **Connexion Portefeuille**: MetaMask
+- **Développement Local**: Ganache
+
+## Structure du Projet
 
 ```
 /property-registry-dApp
 ├── contracts/
-│   └── PropertyRegistry.sol     # Main smart contract
+│   ├── PropertyRegistry.sol     # Contrat initial
+│   ├── PropertyRegistryV2.sol   # Version 2 du contrat
+│   └── PropertyRegistryV3.sol   # Version actuelle du contrat
 ├── migrations/
-│   └── 1_deploy_contracts.js    # Deployment script
-├── property-frontend/
-│   ├── public/                  # Static assets
+│   ├── 1_deploy_contracts.js    # Script de déploiement initial
+│   └── 3_deploy_v3.js           # Script de déploiement V3
+├── frontend/
+│   ├── public/                  # Ressources statiques
 │   ├── src/
-│   │   ├── components/          # React components
-│   │   │   ├── Admin.jsx        # Admin panel for validation
-│   │   │   ├── Dashboard.jsx    # User dashboard
-│   │   │   ├── Home.jsx         # Landing page
-│   │   │   ├── Marketplace.jsx  # Property marketplace
-│   │   │   ├── Navbar.jsx       # Navigation component
-│   │   │   └── Register.jsx     # Property registration form
-│   │   ├── contracts/           # Contract ABIs
-│   │   ├── utils/               # Utility functions
-│   │   ├── App.jsx              # Main app component
-│   │   ├── App.css              # App styles
-│   │   ├── main.jsx             # Entry point
-│   │   └── index.css            # Global styles
-│   ├── package.json             # Frontend dependencies
-│   └── vite.config.js           # Vite configuration
-└── truffle-config.js            # Truffle configuration
+│   │   ├── components/          # Composants React
+│   │   ├── pages/               # Pages de l'application
+│   │   ├── utils/               # Fonctions utilitaires
+│   │   ├── contracts/           # ABIs des contrats
+│   │   ├── App.jsx              # Composant principal de l'application
+│   │   ├── App.css              # Styles de l'application
+│   │   ├── main.jsx             # Point d'entrée
+│   │   └── index.css            # Styles globaux
+│   ├── package.json             # Dépendances frontend
+│   └── vite.config.js           # Configuration Vite
+└── truffle-config.js            # Configuration Truffle
 ```
 
-## Getting Started
+## Démarrage
 
-### Prerequisites
+### Prérequis
 
-- Node.js and npm
-- Ganache - local Ethereum blockchain
-- MetaMask browser extension
+- Node.js et npm
+- Ganache - blockchain Ethereum locale
+- Extension navigateur MetaMask
 - Truffle CLI
 
-### Setup Instructions
+### Instructions d'Installation
 
-1. **Start Ganache**
-   ```
-   # Start Ganache GUI or CLI
+1. **Démarrer Ganache**
+   ```bash
+   # Démarrer l'interface Ganache ou via CLI
    ganache-cli
    ```
 
-2. **Deploy Smart Contracts**
-   ```
+2. **Déployer les Contrats Intelligents**
+   ```bash
    cd property-registry-dApp
-   truffle compile
-   truffle migrate --network development
+   npx truffle compile
+   npx truffle migrate --reset
    ```
 
-3. **Update Contract Address**
-   - After deployment, copy the contract address from the Truffle output
-   - Update the contract address in `property-frontend/src/utils/constants.js`
-
-4. **Install Frontend Dependencies**
+3. **Pour déployer uniquement la version V3 du contrat**
+   ```bash
+   npx truffle migrate --f 3 --to 3
    ```
-   cd property-frontend
+
+4. **Mettre à jour l'Adresse du Contrat**
+   - Après le déploiement, copiez l'adresse du contrat depuis la sortie de Truffle
+   - Mettez à jour l'adresse du contrat dans `frontend/src/utils/constants.js`
+
+5. **Installer les Dépendances Frontend**
+   ```bash
+   cd frontend
    npm install
    ```
 
-5. **Start Frontend Application**
-   ```
+6. **Démarrer l'Application Frontend**
+   ```bash
    npm run dev
    ```
 
-6. **Configure MetaMask**
-   - Connect MetaMask to Ganache (usually http://localhost:7545)
-   - Import an account from Ganache using the private key
+7. **Configurer MetaMask**
+   - Connectez MetaMask à Ganache (généralement http://localhost:7545)
+   - Importez un compte depuis Ganache en utilisant la clé privée
 
-## Smart Contract Functions
+## Fonctions du Contrat Intelligent
 
-- `registerProperty`: Register a new property
-- `validateProperty`: Validate a property (admin only)
-- `buyProperty`: Purchase a property
-- `getUserProperties`: Get properties owned by a user
-- `getPropertyDetails`: Get details of a specific property
-- `getAllProperties`: Get IDs of all properties
+### Fonctions Utilisateur
+- `registerProperty`: Enregistrer une nouvelle propriété
+- `buyProperty`: Acheter une propriété
+- `getUserProperties`: Obtenir les propriétés d'un utilisateur
 
-## Frontend Features
+### Fonctions Admin
+- `approveProperty`: Approuver une propriété
+- `rejectProperty`: Rejeter une propriété
+- `withdrawAdminBalance`: Retirer les commissions accumulées
 
-- **Role-based UI**: Different views for regular users and admin
-- **Property Registration**: Form to submit new properties
-- **Property Marketplace**: Browse and purchase validated properties
-- **User Dashboard**: View owned properties and wallet balance
-- **Admin Panel**: Validate pending properties
+### Fonctions Super Admin
+- `addAdmin`: Ajouter un nouvel administrateur
+- `removeAdmin`: Supprimer un administrateur
+- `registerUser`: Enregistrer un nouvel utilisateur
 
-## Testing
+### Fonctions de Consultation
+- `getPropertyDetails`: Obtenir les détails d'une propriété
+- `getAllProperties`: Obtenir les IDs de toutes les propriétés
+- `getAdminBalance`: Consulter le solde d'un administrateur
 
-To run tests for the smart contract:
+## Fonctionnalités Frontend
+
+- **Interface adaptée aux rôles**: Vues différentes pour Super Admin, Admin et Utilisateur
+- **Enregistrement de propriétés**: Formulaire pour soumettre de nouvelles propriétés
+- **Marché immobilier**: Parcourir et acheter des propriétés approuvées
+- **Mes Propriétés**: Voir les propriétés possédées et leur statut
+- **Panneau d'administration**: Approuver ou rejeter les propriétés en attente
+- **Panneau Super Admin**: Gérer les administrateurs et les utilisateurs
+- **Gestion des commissions**: Consulter et retirer les commissions accumulées
+
+## Tests
+
+Pour exécuter les tests du contrat intelligent :
+```bash
+npx truffle test
 ```
-truffle test
+
+## Utilisation de l'Application
+
+### En tant que Super Admin
+- Le compte qui déploie le contrat devient automatiquement le Super Admin
+- Utilisez l'interface Super Admin pour ajouter des administrateurs et enregistrer des utilisateurs
+
+### En tant qu'Admin
+- Approuvez ou rejetez les propriétés en attente
+- Retirez vos commissions accumulées (10% des ventes)
+
+### En tant qu'Utilisateur
+- Enregistrez de nouvelles propriétés (nécessite une approbation)
+- Achetez des propriétés approuvées
+- Consultez vos propriétés dans la section "Mes Propriétés"
+
+## Déploiement sur Testnet
+
+Pour déployer sur des testnets Ethereum comme Sepolia ou Goerli, mettez à jour le fichier `truffle-config.js` avec les paramètres de réseau appropriés et utilisez la commande suivante :
+
+```bash
+npx truffle migrate --network sepolia
 ```
 
-## Deployment to Testnet
+## Dépannage
 
-To deploy to Ethereum testnets like Goerli or Sepolia, update the `truffle-config.js` file with the appropriate network settings and use the following command:
+- Si vous rencontrez des problèmes de connexion avec MetaMask, assurez-vous que vous êtes sur le bon réseau (Ganache)
+- Si les transactions échouent, vérifiez que vous avez suffisamment d'ETH dans votre portefeuille
+- Pour réinitialiser l'application, redéployez les contrats et effacez le stockage local du navigateur
 
-```
-truffle migrate --network goerli
-```
+## Licence
 
-## License
-
-This project is licensed under the MIT License.
+Ce projet est sous licence MIT.
